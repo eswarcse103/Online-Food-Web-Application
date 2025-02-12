@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} 
+Menu
+{% endblock %} 
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "food_menu/food_menu.css" %}" />
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ hotel.name }}'s Menu</h1>
+    <div class="card-container">
+        {% for food in foods %}
+            <div class="card">
+                <img src="{{ food.food_image.url }}" alt="{{ food.food_name }}">
+                <h2>{{ food.food_name }}</h2>
+                <h3>Rs.{{ food.food_price }}</h3>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="decrease(this)">-</button>
+                    <input type="text" class="quantity-input" value="0" readonly>
+                    <button class="quantity-btn" onclick="increase(this)">+</button>
+                </div>
+            </div>
+        {% empty %}
+            <p>No food items available.</p>
+        {% endfor %}
+    </div>
+</div>
+<div id="content">
+    <button onclick="goToCart()">Go to Cart</button>
+</div>
+
+<script>
+    function increase(button) {
+        var input = button.previousElementSibling;
+        var value = parseInt(input.value);
+        input.value = value + 1;
+        updateFoodDetails(button);
+    }
+
+    function decrease(button) {
+        var input = button.nextElementSibling;
+        var value = parseInt(input.value);
+        if (value > 0) {
+            input.value = value - 1;
+            updateFoodDetails(button);
+        }
+    }
+
+    function updateFoodDetails(button) {
+        var card = button.closest('.card');
+        var foodName = card.querySelector('h2').innerText;
+        var foodPrice = card.querySelector('h3').innerText.replace('Rs.', '');
+        var quantity = card.querySelector('.quantity-input').value;
+
+        var orders = JSON.parse(localStorage.getItem('orders')) || [];
+        
+        var existingOrder = orders.find(order => order.name === foodName);
+        
+        if (existingOrder) {
+            existingOrder.quantity = quantity;
+        } else { 
+            orders.push({ name: foodName, price: foodPrice, quantity: quantity });
+        }
+        localStorage.setItem('orders', JSON.stringify(orders));
+    }
+
+    function goToCart() {
+        window.location.href = {% url "orders_list" %};
+    }
+</script>
+{% endblock content %}

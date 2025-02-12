@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} 
+Home page
+{% endblock %} 
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "home/home.css" %}" />
+  
+{% endblock %}
+
+{% block content %}
+            <div id="content">
+                <h1>Food World</h1>
+                <a href="{% url 'hotel_list' %}"><button>Go to Restaurants</button></a>
+            </div>
+            <div class="card-container">
+              <div class="card">
+                <img src="{% static 'images/dosai.jpg' %}" alt="Dosai">
+            </div>
+            <div class="card">
+                <img src="{% static 'images/idly.jpg' %}" alt="Idly">
+            </div>
+            <div class="card">
+                <img src="{% static 'images/parotta.jpg' %}" alt="Parotta">
+            </div>
+           </div>
+{% endblock content %}
