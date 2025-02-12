@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your Orders{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'orders/orders.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Your Orders</h1>
+    <div class="orders-container" id="ordersContainer">
+    </div>
+    <div class="total-price" id="totalPrice">
+        <h2>Total Price: Rs. 0</h2>
+    </div>
+</div>
+<div id="content">
+    <button id="placeOrderButton">Place Your Order</button>
+</div>
+
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var orders = JSON.parse(localStorage.getItem('orders')) || [];
+        var ordersContainer = document.getElementById('ordersContainer');
+        var totalPriceElement = document.getElementById('totalPrice').querySelector('h2');
+        var totalPrice = 0;
+
+        orders.forEach(order => {
+            var orderDiv = document.createElement('div');
+            orderDiv.className = 'order';
+
+            var nameElement = document.createElement('h2');
+            nameElement.innerText = 'Food Name: ' + order.name;
+
+            var priceElement = document.createElement('p');
+            priceElement.innerText = 'Price: Rs. ' + order.price;
+
+            var quantityElement = document.createElement('p');
+            quantityElement.innerText = 'Quantity: ' + order.quantity;
+
+            totalPrice += order.price * order.quantity;
+
+            orderDiv.appendChild(nameElement);
+            orderDiv.appendChild(priceElement);
+            orderDiv.appendChild(quantityElement);
+
+            ordersContainer.appendChild(orderDiv);
+        });
+
+        totalPriceElement.innerText = 'Total Price: Rs. ' + totalPrice;
+
+        var placeOrderButton = document.getElementById('placeOrderButton');
+        placeOrderButton.addEventListener('click', function() {
+            {% if user.is_authenticated %}
+            window.location.href = "{% url 'thank_you' %}";
+            {% else %}
+            window.location.href = "{% url 'login' %}";
+            {% endif %}
+        });
+
+        localStorage.removeItem('orders');
+    });
+</script>
+{% endblock %}

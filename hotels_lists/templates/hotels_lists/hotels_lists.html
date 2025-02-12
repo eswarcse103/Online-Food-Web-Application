@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} 
+Restaurants page
+{% endblock %} 
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "hotels_lists/hotels_lists.css" %}" />
+  
+{% endblock %}
+{% block content %}
+            <div class="container">
+                <h1>Hotels</h1>
+                <div class="card-container">
+                    {% for hotel in Hotel %}
+                        <div class="card">                           
+                                <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}">
+                            <h2>{{ hotel.name }}</h2>
+                            <p>{{ hotel.city }}</p>
+                            <a href="{% url "food_menu" hotel.id %}" class="btn">View Menu</a>
+                        </div>            
+                    {% endfor %}
+                </div>
+            </div>
+{% endblock content %}           

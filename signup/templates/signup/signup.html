@@ -1,0 +1,40 @@
+{% load static %}
+<!Doctype HTML>
+<html lang="html">
+    <head>
+        <meta charset="UTF-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign Up</title>
+        <link rel="stylesheet" href="{% static "signup/style.css" %}">
+        </head>
+        <body>
+            <div id="Navigation">
+                <div class="welcome">
+                    Welcome
+                </div>
+                <div class="nav-links">
+                <a  href="{% url 'home_view' %}">Home</a>  
+                <a class="active" href="#login">Sign up</a> 
+                <a href="{% url 'hotel_list' %}">Restaurants</a> 
+                </div>
+            </div> 
+            <div id="content">
+                <h1>Food World sign up</h1>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form  %}
+                   <div class="form-control {% if field.errors %}errors{% endif %} ">
+                    {{field.label_tag}}
+                    {{field}}
+                    {{field.errors}}
+                   </div>
+                {% endfor %}
+                <button type="submit">submit</button>  
+            </form>    
+            <footer>
+                <p>Email: foodworld@gmail.com</p>
+                <p>Contact: 123-456-7890</p>
+            </footer>
+        </body>
+        </html>   

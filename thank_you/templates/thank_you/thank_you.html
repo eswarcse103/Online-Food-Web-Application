@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} 
+Thanks page
+{% endblock %} 
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "thank_you/thank_you.css" %}" />
+  
+{% endblock %}
+{% block content %}
+<div id="content">
+    <h1>Thank you</h1>
+    <p>Your order has been placed successfully.</p>
+</div>
+{% endblock content %}           
